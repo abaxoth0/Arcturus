@@ -23,11 +23,7 @@ func main() {
 
 	for _, tk := range tokens {
 		r := tk.Raw()
-		if r == " " {
-			fmt.Printf("_")
-		} else {
-			fmt.Printf("%s", r)
-		}
+		fmt.Printf("%s ", r)
 	}
 
 	println()

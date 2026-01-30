@@ -12,7 +12,18 @@ const (
 	Value
 )
 
+type Kind uint
+
+const (
+	DataType Kind = iota
+	Separator
+	Declaration
+
+	Identifier
+)
+
 type Token interface {
+	Kind() Kind
 	Type() Type
 	Raw()  string
 }
@@ -34,8 +45,6 @@ const (
 
 	INT
 	STRING
-
-	WHITESPACE
 )
 
 func (t PlainToken) Raw() string {
@@ -46,8 +55,6 @@ func (t PlainToken) Raw() string {
 		return "{"
 	case RBRACE:
 		return "}"
-	case WHITESPACE:
-		return " "
 	case MESSAGE:
 		return "message"
 	case INT:
@@ -56,6 +63,19 @@ func (t PlainToken) Raw() string {
 		return "string"
 	default:
 		return "none"
+	}
+}
+
+func (t PlainToken) Kind() Kind {
+	switch t {
+	case SEMICOLON, LBRACE, RBRACE:
+		return Separator
+	case INT, STRING:
+		return DataType
+	case MESSAGE:
+		return Declaration
+	default:
+		panic("Invalid token kind")
 	}
 }
 
@@ -85,6 +105,15 @@ func (t valueToken[T]) Raw() string {
 		return str.String()
 	}
 	return "VALUE_TOKEN"
+}
+
+func (t valueToken[T]) Kind() Kind {
+	switch t.valueKind {
+	case identifier:
+		return Identifier
+	default:
+		panic("Invalid kind of value token")
+	}
 }
 
 type IDENTIFIER = valueToken[string]

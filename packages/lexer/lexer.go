@@ -9,21 +9,17 @@ func Parse(input []byte) []token.Token {
 	reading := false
 	lexeme := make([]byte, 0, 256)
 
-	for i, char := range input {
+	for _, char := range input {
 		switch char {
 		case '{', '}', ';', ' ':
-			// TODO: FIX
-			// Currently it works fine, but i still think that this i+1 is kinda problematic,
-			// since there are no any bounds checking before it.
-			if char == ' ' && char == input[i+1] {
-				continue
-			}
 			if reading {
 				reading = false
 				tokens = append(tokens, tokenize(string(lexeme)))
 				lexeme = lexeme[:0] // set length to 0 keeping capacity to avoid buffer reallocation
 			}
-			tokens = append(tokens, tokenize(string(char)))
+			if char != ' ' {
+				tokens = append(tokens, tokenize(string(char)))
+			}
 			continue
 		case '\n':
 			continue
@@ -40,8 +36,6 @@ func Parse(input []byte) []token.Token {
 
 func tokenize(lexeme string) token.Token {
 	switch lexeme {
-	case token.WHITESPACE.Raw():
-		return token.WHITESPACE
 	case token.SEMICOLON.Raw():
 		return token.SEMICOLON
 	case token.LBRACE.Raw():
