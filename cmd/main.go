@@ -2,6 +2,7 @@ package main
 
 import (
 	"arcturus/packages/lexer"
+	"fmt"
 	"io"
 	"os"
 )
@@ -18,9 +19,16 @@ func main() {
 		panic(err)
 	}
 
-	lexer.Parse(content)
+	tokens := lexer.Parse(content)
+
+	for _, tk := range tokens {
+		r := tk.Raw()
+		if r == " " {
+			fmt.Printf("_")
+		} else {
+			fmt.Printf("%s", r)
+		}
+	}
 
 	println()
-	println("------------------")
-	println("DONE")
 }
