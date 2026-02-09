@@ -12,16 +12,16 @@ var (
 	Stderr = logger.NewStdErrLogger("")
 )
 
-var DefaultLoggerConfig = &logger.FileLoggerConfig{
-	Path:     "/var/log/arcturus",
-	FilePerm: 0644,
+var DefaultConfig = &logger.FileLoggerConfig{
+	Path:     "/tmp/arcturus",
+	FilePerm: 0744,
 	LoggerConfig: &logger.LoggerConfig{
 		ApplicationName: "arcturus",
 	},
 }
 
 var Default = func() *logger.FileLogger {
-	log, err := logger.NewFileLogger(DefaultLoggerConfig)
+	log, err := logger.NewFileLogger(DefaultConfig)
 	if err != nil {
 		fmt.Println("Failed to setup default Logger:", err)
 		os.Exit(1)

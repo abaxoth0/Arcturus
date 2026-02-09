@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"arcturus/packages/common/logger"
+	"arcturus/packages/shared/logger"
 	"arcturus/packages/token"
 
 	log "github.com/abaxoth0/Ain/logger"
