@@ -25,7 +25,7 @@ const (
 type Token interface {
 	Kind() Kind
 	Type() Type
-	Raw()  string
+	String() string
 }
 
 type PlainToken uint
@@ -35,19 +35,19 @@ func (_ PlainToken) Type() Type {
 }
 
 const (
-	none PlainToken = iota
+	None PlainToken = iota
 
 	SEMICOLON
 	LBRACE
 	RBRACE
 
-	MESSAGE
+	SCHEMA
 
 	INT
 	STRING
 )
 
-func (t PlainToken) Raw() string {
+func (t PlainToken) String() string {
 	switch t {
 	case SEMICOLON:
 		return ";"
@@ -55,8 +55,8 @@ func (t PlainToken) Raw() string {
 		return "{"
 	case RBRACE:
 		return "}"
-	case MESSAGE:
-		return "message"
+	case SCHEMA:
+		return "schema"
 	case INT:
 		return "int"
 	case STRING:
@@ -72,7 +72,7 @@ func (t PlainToken) Kind() Kind {
 		return Separator
 	case INT, STRING:
 		return DataType
-	case MESSAGE:
+	case SCHEMA:
 		return Declaration
 	default:
 		panic("Invalid token kind")
@@ -123,7 +123,7 @@ func NewIdentifier(name string) IDENTIFIER {
 		panic("Empty IDENTIFIER")
 	}
 	return IDENTIFIER{
-		Value: name,
+		Value:     name,
 		valueKind: identifier,
 	}
 }

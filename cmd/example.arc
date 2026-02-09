@@ -1,4 +1,4 @@
-message     User
+schema     User
 
 
 

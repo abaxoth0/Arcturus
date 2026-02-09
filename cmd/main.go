@@ -7,7 +7,6 @@ import (
 	"os"
 )
 
-
 func main() {
 	file, err := os.OpenFile("example.arc", os.O_RDONLY, 0644)
 	if err != nil {
@@ -22,7 +21,7 @@ func main() {
 	tokens := lexer.Parse(content)
 
 	for _, tk := range tokens {
-		r := tk.Raw()
+		r := tk.String()
 		fmt.Printf("%s ", r)
 	}
 

@@ -36,17 +36,17 @@ func Parse(input []byte) []token.Token {
 
 func tokenize(lexeme string) token.Token {
 	switch lexeme {
-	case token.SEMICOLON.Raw():
+	case token.SEMICOLON.String():
 		return token.SEMICOLON
-	case token.LBRACE.Raw():
+	case token.LBRACE.String():
 		return token.LBRACE
-	case token.RBRACE.Raw():
+	case token.RBRACE.String():
 		return token.RBRACE
-	case token.MESSAGE.Raw():
-		return token.MESSAGE
-	case token.INT.Raw():
+	case token.SCHEMA.String():
+		return token.SCHEMA
+	case token.INT.String():
 		return token.INT
-	case token.STRING.Raw():
+	case token.STRING.String():
 		return token.STRING
 	default:
 		return token.NewIdentifier(lexeme)
