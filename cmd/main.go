@@ -54,7 +54,10 @@ func main() {
 		panic(err)
 	}
 
-	tokens := lexer.Parse(content)
+	tokens, err := lexer.Parse(content)
+	if err != nil {
+		appLogger.Fatal("Failed to parse input", err.Error(), nil)
+	}
 
 	for _, tk := range tokens {
 		r := tk.String()

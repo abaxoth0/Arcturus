@@ -9,7 +9,7 @@ import (
 
 var lexerLogger = log.NewSource("LEXER", logger.Default)
 
-func Parse(input []byte) []token.Token {
+func Parse(input []byte) ([]token.Token, error) {
 	tokens := []token.Token{}
 	reading := false
 	lexeme := make([]byte, 0, 256)
@@ -18,12 +18,20 @@ func Parse(input []byte) []token.Token {
 		switch char {
 		case '{', '}', ';', ' ':
 			if reading {
-				reading = false
-				tokens = append(tokens, tokenize(string(lexeme)))
+				token, err := tokenize(string(lexeme))
+				if err != nil {
+					return nil, err
+				}
+				tokens = append(tokens, token)
 				lexeme = lexeme[:0] // set length to 0 keeping capacity to avoid buffer reallocation
+				reading = false
 			}
 			if char != ' ' {
-				tokens = append(tokens, tokenize(string(char)))
+				token, err := tokenize(string(char))
+				if err != nil {
+					return nil, err
+				}
+				tokens = append(tokens, token)
 			}
 			continue
 		case '\n':
@@ -36,24 +44,24 @@ func Parse(input []byte) []token.Token {
 		lexeme = append(lexeme, char)
 		// print(string(char))
 	}
-	return tokens
+	return tokens, nil
 }
 
-func tokenize(lexeme string) token.Token {
+func tokenize(lexeme string) (token.Token, error) {
 	lexerLogger.Trace("lexeme: "+lexeme, nil)
 	switch lexeme {
 	case token.SEMICOLON.String():
-		return token.SEMICOLON
+		return token.SEMICOLON, nil
 	case token.LBRACE.String():
-		return token.LBRACE
+		return token.LBRACE, nil
 	case token.RBRACE.String():
-		return token.RBRACE
+		return token.RBRACE, nil
 	case token.SCHEMA.String():
-		return token.SCHEMA
+		return token.SCHEMA, nil
 	case token.INT.String():
-		return token.INT
+		return token.INT, nil
 	case token.STRING.String():
-		return token.STRING
+		return token.STRING, nil
 	default:
 		return token.NewIdentifier(lexeme)
 	}

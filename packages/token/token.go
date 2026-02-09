@@ -1,6 +1,7 @@
 package token
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -15,7 +16,8 @@ const (
 type Kind uint
 
 const (
-	DataType Kind = iota
+	None Kind = iota
+	DataType = iota
 	Separator
 	Declaration
 
@@ -35,7 +37,7 @@ func (_ PlainToken) Type() Type {
 }
 
 const (
-	None PlainToken = iota
+	NONE PlainToken = iota
 
 	SEMICOLON
 	LBRACE
@@ -75,7 +77,7 @@ func (t PlainToken) Kind() Kind {
 	case SCHEMA:
 		return Declaration
 	default:
-		panic("Invalid token kind")
+		return None
 	}
 }
 
@@ -112,18 +114,21 @@ func (t valueToken[T]) Kind() Kind {
 	case identifier:
 		return Identifier
 	default:
-		panic("Invalid kind of value token")
+		return None
 	}
 }
 
 type IDENTIFIER = valueToken[string]
 
-func NewIdentifier(name string) IDENTIFIER {
+var ErrEmptyIdentifierName = errors.New("Identifier name is empty")
+
+func NewIdentifier(name string) (IDENTIFIER, error) {
 	if strings.ReplaceAll(name, " ", "") == "" {
-		panic("Empty IDENTIFIER")
+		var zero IDENTIFIER
+		return zero, ErrEmptyIdentifierName
 	}
 	return IDENTIFIER{
 		Value:     name,
 		valueKind: identifier,
-	}
+	}, nil
 }
