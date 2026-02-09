@@ -1,8 +1,13 @@
 package lexer
 
 import (
+	"arcturus/packages/common/logger"
 	"arcturus/packages/token"
+
+	log "github.com/abaxoth0/Ain/logger"
 )
+
+var lexerLogger = log.NewSource("LEXER", logger.Default)
 
 func Parse(input []byte) []token.Token {
 	tokens := []token.Token{}
@@ -35,6 +40,7 @@ func Parse(input []byte) []token.Token {
 }
 
 func tokenize(lexeme string) token.Token {
+	lexerLogger.Trace("lexeme: "+lexeme, nil)
 	switch lexeme {
 	case token.SEMICOLON.String():
 		return token.SEMICOLON
