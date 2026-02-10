@@ -98,7 +98,7 @@ func (_ valueToken[T]) Type() Type {
 	return Value
 }
 
-func (t valueToken[T]) Raw() string {
+func (t valueToken[T]) String() string {
 	switch v := any(t).(type) {
 	case valueToken[string]:
 		return v.Value
