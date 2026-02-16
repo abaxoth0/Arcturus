@@ -1,6 +1,7 @@
 package main
 
 import (
+	"arcturus/packages/compiler/ast"
 	"arcturus/packages/lexer"
 	"arcturus/packages/shared/config"
 	log "arcturus/packages/shared/logger"
@@ -64,4 +65,19 @@ func main() {
 		fmt.Printf("%s ", r)
 	}
 	println()
+
+	mod, err := ast.ParseModule("example", tokens)
+	if err != nil {
+		println("[ ERROR ]",err.Error())
+		return
+	}
+
+	fmt.Println(mod.Schemas)
+	for _, schema := range mod.Schemas {
+		println("------")
+		fmt.Println(schema.Name(), len(schema.Properties()))
+		for propName, propType := range schema.Properties() {
+			fmt.Println(propName, propType)
+		}
+	}
 }
