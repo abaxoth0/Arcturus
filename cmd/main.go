@@ -2,8 +2,8 @@ package main
 
 import (
 	"arcturus/packages/lexer"
-	log "arcturus/packages/shared/logger"
 	"arcturus/packages/shared/config"
+	log "arcturus/packages/shared/logger"
 	"fmt"
 	"io"
 	"os"
@@ -24,7 +24,7 @@ func main() {
 	if err := log.Default.Init(); err != nil {
 		appLogger.Fatal("Failed to initialize logger", err.Error(), nil)
 	}
-	if config.ShowLogs {
+	if config.Verbose {
 		if err := log.Default.AddForwarding(log.Stdout); err != nil {
 			appLogger.Error("Failed to add Default -> Stdout logs forwarding", err.Error(), nil)
 		}
@@ -63,6 +63,5 @@ func main() {
 		r := tk.String()
 		fmt.Printf("%s ", r)
 	}
-
 	println()
 }
